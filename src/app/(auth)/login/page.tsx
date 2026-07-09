@@ -32,7 +32,8 @@ export default function LoginPage() {
 
     // Check role for redirect
     const { data: profile } = await supabase.from('profiles').select('role').eq('id', authData.user.id).single()
-    if (profile?.role === 'admin' || profile?.role === 'owner') {
+    const role = (profile as any)?.role
+    if (role === 'admin' || role === 'owner') {
       router.push('/admin')
     } else {
       router.push(redirect)
