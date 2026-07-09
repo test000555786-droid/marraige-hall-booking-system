@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: 'Book your preferred marriage hall online. Check availability, choose your date, and complete payment in minutes.',
 }
 
+export const revalidate = 3600
+
 export default async function BookPage({
   searchParams,
 }: {

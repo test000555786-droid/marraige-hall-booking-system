@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient, createSupabaseAdminClient } from '@/lib/supabase/server'
 import { calculatePricing } from '@/lib/utils'
 import {
@@ -173,6 +174,7 @@ export async function POST(request: Request) {
       ])
     }
 
+    revalidatePath('/availability')
     return NextResponse.json({
       data: { bookingRef: booking.booking_ref, bookingId: booking.id },
       error: null,

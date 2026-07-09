@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { createSupabaseAdminClient } from '@/lib/supabase/server'
 import { sendBookingExpiredEmail, createNotification } from '@/lib/notifications'
 import type { BookingWithDetails } from '@/types/database'
@@ -59,6 +60,7 @@ export async function GET(req: Request) {
 
     console.log(`[CRON] Expired ${expiredCount} booking(s)`)
 
+    revalidatePath('/availability')
     return NextResponse.json({
       data: { expired: expiredCount, message: `Expired ${expiredCount} booking(s)` },
       error: null,

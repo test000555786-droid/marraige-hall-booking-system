@@ -1,4 +1,4 @@
-import { createSupabaseServerClient, createSupabaseAdminClient } from '@/lib/supabase/server'
+import { createSupabaseServerClient, createSupabaseAdminClient, createSupabasePublicClient } from '@/lib/supabase/server'
 import { buildSettingsMap } from '@/lib/utils'
 import type {
   ApiResponse,
@@ -18,7 +18,7 @@ import type {
 // ============================================================
 
 export async function getHallSettings(): Promise<HallSettings> {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabasePublicClient()
   const { data, error } = await supabase
     .from('hall_settings')
     .select('key, value')
@@ -36,7 +36,7 @@ export async function getHallSettings(): Promise<HallSettings> {
 // ============================================================
 
 export async function getActiveVenues(): Promise<ApiResponse<DbVenue[]>> {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabasePublicClient()
   const { data, error } = await supabase
     .from('venues')
     .select('*')
@@ -48,7 +48,7 @@ export async function getActiveVenues(): Promise<ApiResponse<DbVenue[]>> {
 }
 
 export async function getVenueBySlug(slug: string): Promise<ApiResponse<DbVenue>> {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabasePublicClient()
   const { data, error } = await supabase
     .from('venues')
     .select('*')
@@ -78,7 +78,7 @@ export async function getAllVenuesAdmin(): Promise<ApiResponse<DbVenue[]>> {
 export async function getBookedDates(
   venueId?: string
 ): Promise<ApiResponse<{ event_date: string; venue_id: string }[]>> {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabasePublicClient()
 
   let query = supabase
     .from('bookings')
@@ -98,7 +98,7 @@ export async function getBookedDates(
 export async function getBlockedDates(
   venueId?: string
 ): Promise<ApiResponse<DbBlockedDate[]>> {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabasePublicClient()
 
   let query = supabase.from('blocked_dates').select('*')
 
@@ -219,7 +219,7 @@ export async function getGalleryItems(
   category?: string,
   venueId?: string
 ): Promise<ApiResponse<DbGallery[]>> {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabasePublicClient()
 
   let query = supabase
     .from('gallery')
@@ -239,7 +239,7 @@ export async function getGalleryItems(
 // ============================================================
 
 export async function getTestimonials(): Promise<ApiResponse<DbTestimonial[]>> {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabasePublicClient()
   const { data, error } = await supabase
     .from('testimonials')
     .select('*')

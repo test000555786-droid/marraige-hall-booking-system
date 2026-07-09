@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: 'Explore three stunning halls — Pearl, Emerald, and Diamond. Find the perfect venue for your wedding or celebration.',
 }
 
+export const revalidate = 3600
+
 export default async function VenuesPage() {
   const { data: venues, error } = await getActiveVenues()
 
@@ -54,9 +56,9 @@ export default async function VenuesPage() {
               <div className={cn('grid lg:grid-cols-2', idx % 2 === 1 && 'lg:grid-flow-col-dense')}>
                 {/* Images */}
                 <div className={cn('relative h-72 lg:h-auto', idx % 2 === 1 && 'lg:col-start-2')}>
-                  {venue.images[0] ? (
+                  {(venue.images[0] || `/venues/${venue.slug.split('-')[0]}.webp`) ? (
                     <Image
-                      src={venue.images[0]}
+                      src={venue.images[0] || `/venues/${venue.slug.split('-')[0]}.webp`}
                       alt={`${venue.name} interior`}
                       fill
                       sizes="(max-width: 1024px) 100vw, 50vw"

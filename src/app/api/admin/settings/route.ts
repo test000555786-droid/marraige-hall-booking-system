@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient, createSupabaseAdminClient } from '@/lib/supabase/server'
 
 export async function POST(req: Request) {
@@ -20,6 +21,7 @@ export async function POST(req: Request) {
       await admin.from('hall_settings').upsert(update, { onConflict: 'key' })
     }
 
+    revalidatePath('/', 'layout')
     return NextResponse.json({ data: { success: true }, error: null })
   } catch (err) {
     return NextResponse.json({ data: null, error: 'Failed to save settings' }, { status: 500 })

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient, createSupabaseAdminClient } from '@/lib/supabase/server'
 import { sendBookingCancelledEmail, createNotification } from '@/lib/notifications'
 import type { BookingWithDetails } from '@/types/database'
@@ -28,6 +29,7 @@ export async function POST(req: Request) {
       ])
     }
 
+    revalidatePath('/availability')
     return NextResponse.json({ data: { success: true }, error: null })
   } catch {
     return NextResponse.json({ data: null, error: 'Failed to cancel booking' }, { status: 500 })

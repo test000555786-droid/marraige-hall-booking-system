@@ -1,5 +1,6 @@
 // src/app/api/admin/bookings/complete/route.ts
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient, createSupabaseAdminClient } from '@/lib/supabase/server'
 
 export async function POST(req: Request) {
@@ -11,6 +12,7 @@ export async function POST(req: Request) {
 
     const { bookingId } = await req.json()
     await admin.from('bookings').update({ status: 'completed', completed_at: new Date().toISOString() }).eq('id', bookingId)
+    revalidatePath('/availability')
     return NextResponse.json({ data: { success: true }, error: null })
   } catch {
     return NextResponse.json({ data: null, error: 'Failed to complete booking' }, { status: 500 })

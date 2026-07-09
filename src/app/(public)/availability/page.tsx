@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: 'Check availability of our wedding halls by date and venue. Green dates are open, red dates are booked.',
 }
 
+export const revalidate = 60
+
 export default async function AvailabilityPage({
   searchParams,
 }: {

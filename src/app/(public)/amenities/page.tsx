@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: 'World-class amenities at Shubh Vivah Marriage Hall — AC halls, professional sound, catering, parking, bridal suites and more.',
 }
 
+export const revalidate = 3600
+
 const AMENITY_ICONS: Record<string, React.ElementType> = {
   'AC': Wind,
   'Sound': Music,

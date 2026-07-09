@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: 'Browse our gallery of beautiful weddings, receptions, and celebrations hosted at Shubh Vivah Marriage Hall.',
 }
 
+export const revalidate = 3600
+
 export default async function GalleryPage() {
   const { data: items, error } = await getGalleryItems()
 

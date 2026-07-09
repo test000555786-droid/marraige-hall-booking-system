@@ -1,5 +1,6 @@
 // src/app/api/admin/calendar/block/route.ts
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient, createSupabaseAdminClient } from '@/lib/supabase/server'
 import { eachDayOfInterval, format, parseISO } from 'date-fns'
 
@@ -38,6 +39,7 @@ export async function POST(req: Request) {
 
     await admin.from('blocked_dates').insert(rows)
 
+    revalidatePath('/availability')
     return NextResponse.json({ data: { success: true, warnings }, error: null })
   } catch (err) {
     return NextResponse.json({ data: null, error: 'Failed to block dates' }, { status: 500 })

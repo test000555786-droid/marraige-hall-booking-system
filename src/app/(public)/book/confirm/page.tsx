@@ -4,7 +4,7 @@ import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { formatCurrency, formatDateLong, EVENT_TYPE_LABELS, BOOKING_STATUS_LABELS } from '@/lib/utils'
 import { CheckCircle2, Download, Calendar, ArrowRight } from 'lucide-react'
 
-async function ConfirmationContent({ ref: bookingRef }: { ref: string }) {
+async function ConfirmationContent({ bookingRef }: { bookingRef: string }) {
   const supabase = createSupabaseServerClient()
   const { data: booking } = await supabase
     .from('bookings')
@@ -83,7 +83,7 @@ export default function BookingConfirmPage({ searchParams }: { searchParams: { r
     <div className="min-h-screen bg-cream pt-24 pb-16">
       <div className="container">
         <Suspense fallback={<div className="flex justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-gold border-t-transparent" /></div>}>
-          <ConfirmationContent ref={searchParams.ref} />
+          <ConfirmationContent bookingRef={searchParams.ref} />
         </Suspense>
       </div>
     </div>

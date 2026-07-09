@@ -1,5 +1,6 @@
 // src/app/api/bookings/[id]/cancel/route.ts
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient, createSupabaseAdminClient } from '@/lib/supabase/server'
 import { sendBookingCancelledEmail, createNotification } from '@/lib/notifications'
 import type { BookingWithDetails } from '@/types/database'
@@ -30,6 +31,7 @@ export async function POST(_req: Request, { params }: { params: { id: string } }
       createNotification({ userId: session.user.id, type: 'booking_cancelled', title: 'Booking Cancelled', message: `Your booking ${booking.booking_ref} has been cancelled.`, bookingId: booking.id }),
     ])
 
+    revalidatePath('/availability')
     return NextResponse.json({ data: { success: true }, error: null })
   } catch (err) {
     return NextResponse.json({ data: null, error: 'Failed to cancel booking' }, { status: 500 })

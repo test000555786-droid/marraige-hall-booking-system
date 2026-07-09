@@ -1,5 +1,6 @@
 // src/app/api/admin/gallery/upload/route.ts
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient, createSupabaseAdminClient } from '@/lib/supabase/server'
 
 export async function POST(req: Request) {
@@ -27,6 +28,8 @@ export async function POST(req: Request) {
 
     await admin.from('gallery').insert({ url, thumbnail_url: url, category: 'other', display_order: displayOrder, is_active: true })
 
+    revalidatePath('/gallery')
+    revalidatePath('/')
     return NextResponse.json({ data: { url }, error: null })
   } catch (err) {
     return NextResponse.json({ data: null, error: err instanceof Error ? err.message : 'Upload failed' }, { status: 500 })

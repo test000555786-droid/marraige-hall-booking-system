@@ -9,6 +9,8 @@ import TestimonialsCarousel from '@/components/public/TestimonialsCarousel'
 import StatsBar from '@/components/public/StatsBar'
 import { Star, ArrowRight, Users, IndianRupee } from 'lucide-react'
 
+export const revalidate = 3600
+
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getHallSettings()
   return {
@@ -79,9 +81,9 @@ export default async function HomePage() {
               >
                 {/* Venue image */}
                 <div className="relative h-56 overflow-hidden bg-cream-400">
-                  {venue.images[0] ? (
+                  {(venue.images[0] || `/venues/${venue.slug.split('-')[0]}.webp`) ? (
                     <Image
-                      src={venue.images[0]}
+                      src={venue.images[0] || `/venues/${venue.slug.split('-')[0]}.webp`}
                       alt={venue.name}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

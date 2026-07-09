@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   description: 'Read what our guests say about Shubh Vivah Marriage Hall. Thousands of happy couples and families share their celebration stories.',
 }
 
+export const revalidate = 3600
+
 export default async function TestimonialsPage() {
   const { data: testimonials, error } = await getTestimonials()
 
