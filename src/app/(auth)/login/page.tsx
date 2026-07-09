@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
@@ -10,7 +10,7 @@ import { createSupabaseBrowserClient } from '@/lib/supabase/client'
 import { loginSchema, type LoginFormData } from '@/lib/validations'
 import { cn } from '@/lib/utils'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirect = searchParams.get('redirect') || '/dashboard'
@@ -73,9 +73,17 @@ export default function LoginPage() {
       </form>
 
       <p className="mt-6 text-center text-sm text-cream-400/70">
-        Don't have an account?{' '}
+        Don&apos;t have an account?{' '}
         <Link href="/register" className="font-medium text-gold hover:text-gold-300 transition-colors">Create one</Link>
       </p>
     </>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="h-64 animate-pulse rounded-lg bg-white/5" />}>
+      <LoginForm />
+    </Suspense>
   )
 }
